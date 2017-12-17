@@ -45,6 +45,48 @@ class SpiralMemoryTest extends TestCase {
     {
         $o = new SpiralMemory();
         $o->buildUntilSquare(1);
-        //$this->assertEquals(1, $o->getLastValue());
+        $this->assertEquals(1, $o->getLastValue());
+    }
+    public function testPartTwoCase2()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilSquare(2);
+        $this->assertEquals(1, $o->getLastValue());
+    }
+    public function testPartTwoCase3()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilSquare(3);
+        $this->assertEquals(2, $o->getLastValue());
+    }
+    public function testPartTwoCase4()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilSquare(4);
+        $this->assertEquals(4, $o->getLastValue());
+    }
+    public function testPartTwoCase5()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilSquare(5);
+        $this->assertEquals(5, $o->getLastValue());
+    }
+    public function testPartTwoCase6()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilValueLargerThan(5);
+        $this->assertEquals(10, $o->getLastValue());
+    }
+    public function testPartTwoCase7()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilValueLargerThan(26);
+        $this->assertEquals(54, $o->getLastValue());
+    }
+    public function testPartTwoFinal()
+    {
+        $o = new SpiralMemory();
+        $o->buildUntilValueLargerThan(325489);
+        $this->assertEquals(330785, $o->getLastValue());
     }
 }
