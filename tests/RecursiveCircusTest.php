@@ -24,6 +24,29 @@ cntj (57)
 EOF
 );
         $this->assertEquals('tknk', $o->getBottomProgram());
+
+        $this->assertTrue($o->validateChildWeight('fwft'));
+        $this->assertTrue($o->validateChildWeight('padx'));
+        $this->assertTrue($o->validateChildWeight('ugml'));
+
+        $this->assertFalse($o->validateChildWeight('tknk'));
+
+        $this->assertEquals(243, $o->getWeight('fwft'));
+        $this->assertEquals(243, $o->getWeight('padx'));
+        $this->assertEquals(251, $o->getWeight('ugml'));
+
+        try {
+            $o->getWeight('tknk');
+        } catch(UnbalancedException $e) {
+            $this->assertEquals(251, $e->getWrongWeightedWeight());
+            $this->assertEquals(243, $e->getRightWeightedWeight());
+            $this->assertEquals('ugml', $e->getWrongWeightedName());
+            $this->assertEquals(-8, 
+                $e->getRightWeightedWeight() - $e->getWrongWeightedWeight());
+            $this->assertEquals(60, 
+                $o->getSelfWeight($e->getWrongWeightedName()) + 
+                $e->getRightWeightedWeight() - $e->getWrongWeightedWeight());
+        }
     }
     function testFinal() {
         $o = new RecursiveCircus();
@@ -1447,5 +1470,18 @@ baomcxj (54)
 EOF
 );
         $this->assertEquals('ykpsek', $o->getBottomProgram());
+
+        try {
+            $o->getWeight( $o->getBottomProgram() );
+        } catch(UnbalancedException $e) {
+            $this->assertEquals(1903, $e->getWrongWeightedWeight());
+            $this->assertEquals(1894, $e->getRightWeightedWeight());
+            $this->assertEquals('cumah', $e->getWrongWeightedName());
+            $this->assertEquals(-9, 
+                $e->getRightWeightedWeight() - $e->getWrongWeightedWeight());
+            $this->assertEquals(1060, 
+                $o->getSelfWeight($e->getWrongWeightedName()) + 
+                $e->getRightWeightedWeight() - $e->getWrongWeightedWeight());
+        }
     }
 }
