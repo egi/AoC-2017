@@ -10,28 +10,30 @@ class MemoryReallocationTest extends TestCase {
         $this->assertEquals(3, $o->getBankToDistribute());
         $this->assertEquals(7, $o->getNumToDistribute());
         $this->assertEquals('2 4 1 2', $o->step()->toString());
-        $this->assertFalse($o->isStateSeen());
+        $this->assertFalse($o->isCycleSeen());
 
         $this->assertEquals(2, $o->getBankToDistribute());
         $this->assertEquals(4, $o->getNumToDistribute());
         $this->assertEquals('3 1 2 3', $o->step()->toString());
-        $this->assertFalse($o->isStateSeen());
+        $this->assertFalse($o->isCycleSeen());
 
         $this->assertEquals(1, $o->getBankToDistribute());
         $this->assertEquals(3, $o->getNumToDistribute());
         $this->assertEquals('0 2 3 4', $o->step()->toString());
-        $this->assertFalse($o->isStateSeen());
+        $this->assertFalse($o->isCycleSeen());
 
         $this->assertEquals(4, $o->getBankToDistribute());
         $this->assertEquals(4, $o->getNumToDistribute());
         $this->assertEquals('1 3 4 1', $o->step()->toString());
-        $this->assertFalse($o->isStateSeen());
+        $this->assertFalse($o->isCycleSeen());
 
         $this->assertEquals(3, $o->getBankToDistribute());
         $this->assertEquals('2 4 1 2', $o->step()->toString());
-        $this->assertTrue($o->isStateSeen());
+        $this->assertTrue($o->isCycleSeen());
 
         $this->assertEquals(5, $o->getCycleDone());
+        $this->assertEquals(1, $o->getCycleSeen());
+        $this->assertEquals(4, $o->getLoopSize());
     }
     function testCase() {
         $o = new MemoryReallocation(array(0, 2, 7, 0));
@@ -47,6 +49,7 @@ class MemoryReallocationTest extends TestCase {
             $o->reallocate();
         } catch (InfiniteLoopException $e) {
             $this->assertEquals(3156, $e->getCycleDone());
+            $this->assertEquals(1610, $e->getLoopSize());
         }
     }
 }

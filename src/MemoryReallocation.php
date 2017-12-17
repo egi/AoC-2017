@@ -2,10 +2,17 @@
 
 class InfiniteLoopException extends Exception {
     private $cycle = 0;
+    private $loopSize = 0;
     function getCycleDone() { return $this->cycle; }
     function __construct($message=null, $i=0) { 
         $this->cycle = $i;
         parent::__construct($message);
+    }
+    function setLoopSize($i) {
+        $this->loopSize = $i;
+    }
+    function getLoopSize() {
+        return $this->loopSize;
     }
 }
 
@@ -52,13 +59,21 @@ class MemoryReallocation
     function toString() {
         return implode(' ', $this->banks);
     }
-    function isStateSeen() {
+    function isCycleSeen() {
         return (false !== array_search($this->toString(), $this->steps));
     }
+    function getCycleSeen() {
+        return array_search($this->toString(), $this->steps);
+    }
+    function getLoopSize() {
+        return $this->getCycleDone() - $this->getCycleSeen();
+    }
     function reallocate() {
-        while(!$this->isStateSeen()) {
+        while(!$this->isCycleSeen()) {
             $this->step();
         }
-        throw new InfiniteLoopException(null, $this->getCycleDone());
+        $e = new InfiniteLoopException(null, $this->getCycleDone());
+        $e->setLoopSize( $this->getLoopSize() );
+        throw $e;
     }
 }
